@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <echo message="Aggregator schema loading: START"/>
+  <path id="dependencies">
+    <fileset file="../build/lib/mysql-connector-java-5.1.13.jar"/>
+  </path>
+  <sql userid="${mysql.user}" driver="${mysql.driver}" classpathref="dependencies" password="${mysql.password}" url="jdbc:mysql://${mysql.server}:${mysql.port}?autoReconnect=true">drop database if exists ${aggregator.db};
+                                    create database ${aggregator.db};</sql>
+  <sql userid="${mysql.user}" driver="${mysql.driver}" classpathref="dependencies" src="../build/sql/aggregator_database_setup.sql" password="${mysql.password}" url="jdbc:mysql://${mysql.server}:${mysql.port}/${aggregator.db}?autoReconnect=true"/>
+  <echo message="Aggregator schema loading: END"/>
+</target>
+</project>

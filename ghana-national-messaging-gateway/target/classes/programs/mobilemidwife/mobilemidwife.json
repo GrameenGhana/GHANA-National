@@ -1,0 +1,67 @@
+[
+    {
+        "name" : "PREGNANCY_SMS",
+        "type" : "REPEATING",
+        "maxDuration" : "40 Weeks",
+        "messages" : [
+            {
+                "name" : "Pregnancy Text Message",
+                "formats" : ["SMS"],
+                "languages" : ["en"],
+                "messageKey": "PREGNANCY-cw{Offset}-{WeekDay}",
+                "calendarStartOfWeek" : "Sunday",
+                "weekDaysApplicable" : ["Monday" , "Wednesday", "Friday"],
+                "deliverTime" : "10:30"
+            }
+        ]
+    },
+
+    {
+        "name" : "PREGNANCY_VOICE",
+        "type" : "REPEATING",
+        "maxDuration" : "40 Weeks",
+        "messages" : [
+            {
+                "name" : "Pregnancy Voice Message",
+                "formats" : ["IVR"],
+                "languages" : ["en","fa","ka","na","gd","ewe"],
+                "messageKey": "{Offset}",
+                "repeatInterval" : "1 Week",
+                "deliverTime" : "0:0"
+            }
+        ]
+    },
+
+    {
+        "name" : "CHILD_CARE_SMS",
+        "type" : "REPEATING",
+        "maxDuration" : "52 Weeks",
+        "messages" : [
+            {
+                "name" : "Child Care Text Message",
+                "formats" : ["SMS"],
+                "languages" : ["en"],
+                "messageKey": "CHILD_CARE-cw{Offset}-{WeekDay}",
+                "calendarStartOfWeek" : "Sunday",
+                "weekDaysApplicable" : ["Monday"],
+                "deliverTime" : "10:30"
+            }
+        ]
+    },
+
+    {
+        "name" : "CHILD_CARE_VOICE",
+        "type" : "REPEATING",
+        "maxDuration" : "52 Weeks",
+        "messages" : [
+            {
+                "name" : "Child Care Voice Message",
+                "formats" : ["IVR"],
+                "languages" : ["en","fa","ka","na","gd","ewe"],
+                "messageKey": "{Offset}",
+                "repeatInterval" : "1 Week",
+                "deliverTime" : "0:0"
+            }
+        ]
+    }
+]

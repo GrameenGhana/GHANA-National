@@ -1,0 +1,23 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                    http://www.springframework.org/schema/security 
+                    http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+    <http use-expressions="true">
+        <form-login login-page="/login.jsp"  authentication-success-handler-ref="authenticationSuccessHandler" authentication-failure-url="/login.jsp?login_error=1"/>
+        <intercept-url pattern="/login*"/>
+        <!-- hardcoded until the story for staff role login is played <geet/balaji> -->
+        <intercept-url pattern="/admin/**" access="hasAnyRole('System Developer','MoTeCH View Only', 'Create/Edit MoTeCH Data','Provider')" requires-channel="any"/>
+        <!--<intercept-url pattern="/admin/**" access="hasAnyRole('System Developer','Create/Edit MoTeCH Data','Provider')" requires-channel="any"/>-->
+        <!--<intercept-url pattern="/admin/facilities/**" access="hasAnyRole('System Developer','MoTeCH View Only','Provider')" requires-channel="any"/>-->
+        <!--<intercept-url pattern="/security/**" access="hasAnyRole('System Developer','MoTeCH View Only', 'Create/Edit MoTeCH Data')" requires-channel="any"/>-->
+        <logout logout-url="/logout" logout-success-url="/login.jsp"/>
+    </http>
+    <authentication-manager>
+        <authentication-provider ref="openMRSAuthenticationProvider"/>
+    </authentication-manager>
+
+    <beans:bean id="authenticationSuccessHandler" class="org.motechproject.ghana.national.web.security.LoginSuccessHandler"/>
+</beans:beans>

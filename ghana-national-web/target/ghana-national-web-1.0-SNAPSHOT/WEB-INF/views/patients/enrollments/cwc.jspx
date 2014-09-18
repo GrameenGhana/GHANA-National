@@ -1,0 +1,333 @@
+<div id="body" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:form="http://www.springframework.org/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+     xmlns:spring="http://www.springframework.org/tags" xmlns:motech="urn:jsptagdir:/WEB-INF/tags/motech">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <spring:message code="yes" var="yes" htmlEscape="false"/>
+    <spring:message code="no" var="no" htmlEscape="false"/>
+    <spring:message code="required_msg" var="required_msg" htmlEscape="false"/>
+    <spring:message code="incorrect_msg" var="incorrect_msg" htmlEscape="false"/>
+    <spring:url value="/admin/cwc/save" var="form_url"/>
+    <script src="${pageContext.servletContext.contextPath}/resources/js/facility-fields.js"
+            type="text/javascript"><!--closing tag needed--></script>
+
+    <script src="${pageContext.servletContext.contextPath}/resources/js/enroll-CWC.js"
+            type="text/javascript"><!-- required for FF3 and Opera --></script>
+
+    <form:form id="cwcEnrollmentForm" action="${fn:escapeXml(form_url)}" method="POST" title="CWC Enrollment"
+               commandName="cwcEnrollmentForm">
+        <c:if test="${fn:length(errors) ne 0}">
+            <div class="formlyAlerts formlyInvalid formlyAlert" style="display: block;">
+                <c:forEach items="${errors}" var="error">
+                    <c:out value="${error}"/><br/>
+                </c:forEach>
+            </div>
+        </c:if>
+
+        <c:if test="${success ne null}">
+            <div class="success">
+                <c:out value="${success}"/>
+            </div>
+        </c:if>
+
+        <div>
+            <label for="staffId" class="formLabel">
+                <spring:message code="staff_id"/>
+                *:
+            </label>
+            <form:input path="staffId" size="20" cssClass="jsRequire"/>
+            <span id='staffIdError' class='alertText formlyInvalid formlyAlert hide'>
+                <spring:message code="staff_id"/> ${fn:escapeXml(required_msg)}
+            </span>
+        </div>
+
+        <div>
+            <label for="patientMotechId" class="formLabel">
+                <spring:message code="patient_motech_id"/>
+                *:
+            </label>
+            <form:input path="patientMotechId" size="20" disabled="true"/>
+            <form:hidden path="patientMotechId"/>
+        </div>
+
+        <jsp:include page="/WEB-INF/views/common/select_facility.jspx"/>
+
+        <div>
+            <label for="serialNumber" class="formLabel">
+                <spring:message code="patient_serial_number"/>
+                *:
+            </label>
+            <form:input path="serialNumber" size="20" cssClass="jsRequire"/>
+            <span id='serialNumberError' class='alertText formlyInvalid formlyAlert hide'>
+                <spring:message code="patient_serial_number"/> ${fn:escapeXml(required_msg)}
+            </span>
+        </div>
+        <div>
+            <label for="registrationToday" class="formLabel">
+                <spring:message code="registration_today?"/>
+                *:
+            </label>
+            <form:select path="registrationToday" cssClass="jsRequire">
+                <option value="">Select a Value</option>
+                <form:options items="${registrationOptions}"/>
+            </form:select>
+            <span id='registrationTodayError' class='alertText formlyInvalid formlyAlert hide'>
+                <spring:message code="registration_today?"/> ${fn:escapeXml(required_msg)}
+            </span>
+        </div>
+
+        <div id="registraionDateHolder" class="form-field">
+            <label class="formLabel" for="registrationDate">
+                <spring:message code="registration_date"/>
+                *:
+            </label>
+            <form:input readonly="true" path="registrationDate" cssClass="jsDate jsBefore" size="20"
+                        label="${fn:escapeXml(registration_date)}"/>
+            <span id='registrationDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                <spring:message code="registration_date"/> ${fn:escapeXml(incorrect_msg)}
+            </span>
+        </div>
+
+        <div class="form-field">
+            <label for="addHistory" class="formLabel">
+                <spring:message code="patient_history"/>
+                *:
+            </label>
+            <form:radiobutton cssClass="jsRequire" path="addHistory" value="true"
+                              label="${fn:escapeXml(yes)}"/>
+            <form:radiobutton cssClass="jsRequire" path="addHistory" value="false"
+                              label="${fn:escapeXml(no)}"/>
+            <span id='addHistoryError' class='alertText formlyInvalid formlyAlert hide'>
+                <spring:message code="patient_history"/> ${fn:escapeXml(required_msg)}
+            </span>
+        </div>
+
+        <div id="jsCareHistory" class="hide">
+            <div class="form-field">
+                <label for="careHistories" class="formLabel">
+                    <spring:message code="patient_care_history"/>
+                    *:
+                </label>
+                <form:checkboxes path="careHistory" items="${careHistories}" cssClass="jsRequire"/>
+                <span id='careHistoryError' class='alertText formlyInvalid formlyAlert hide'>
+                    <spring:message code="patient_care_history"/> ${fn:escapeXml(required_msg)}
+                </span>
+            </div>
+
+            <div id="jsOPV" class="hide">
+                <div class="form-field">
+                    <label for="lastOPV" class="formLabel">
+                        <spring:message code="patient_last_opv"/>
+                        *:
+                    </label>
+                    <form:radiobuttons path="lastOPV" items="${lastOPV}" cssClass="jsRequire"/>
+                    <span id='lastOPVError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_opv"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                </div>
+
+                <div id="lastOPVDateHolder" class="form-field">
+                    <label for="lastOPVDate" class="formLabel">
+                        <spring:message code="patient_opv_date"/>
+                        *:
+                    </label>
+                    <form:input path="lastOPVDate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='lastOPVDateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_opv_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='lastOPVDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_opv_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+            <div id="jsYF" class="hide">
+                <div id="yfDateHolder" class="form-field">
+                    <label for="yfDate" class="formLabel">
+                        <spring:message code="patient_yf_date"/>
+                        *:
+                    </label>
+                    <form:input path="yfDate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='yfDateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_yf_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='yfDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_yf_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+            <div id="jsBCG" class="hide">
+                <div id="bcgDateHolder" class="form-field">
+                    <label for="bcgDate" class="formLabel">
+                        <spring:message code="patient_bcg_date"/>
+                        *:
+                    </label>
+                    <form:input path="bcgDate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='bcgDateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_bcg_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='bcgDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_bcg_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+            <div id="jsMeasles" class="hide">
+
+                <div class="form-field">
+                    <label for="lastMeasles" class="formLabel">
+                        <spring:message code="patient_last_measles"/>
+                        *:
+                    </label>
+                    <form:radiobuttons path="lastMeasles" items="${lastMeasles}" cssClass="jsRequire"/>
+                    <span id='lastMeaslesError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_measles"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                </div>
+
+                <div id="measlesDateHolder" class="form-field">
+                    <label for="measlesDate" class="formLabel">
+                        <spring:message code="patient_measles_date"/>
+                        *:
+                    </label>
+                    <form:input path="measlesDate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='measlesDateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_measles_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='measlesDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_measles_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+            <div id="jsIPTi" class="hide">
+                <div class="form-field">
+                    <label for="lastIPTi" class="formLabel">
+                        <spring:message code="patient_last_IPTi"/>
+                        *:
+                    </label>
+                    <form:radiobuttons path="lastIPTi" items="${lastIPTi}" cssClass="jsRequire"/>
+                    <span id='lastIPTiError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_IPTi"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                </div>
+
+                <div id="lastIPTiDateHolder" class="form-field">
+                    <label for="lastIPTiDate" class="formLabel">
+                        <spring:message code="patient_IPTi_date"/>
+                        *:
+                    </label>
+                    <form:input path="lastIPTiDate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='lastIPTiDateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_IPTi_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='lastIPTiDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_IPTi_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+            <div id="jsPenta" class="hide">
+                <div class="form-field">
+                    <label for="lastPenta" class="formLabel">
+                        <spring:message code="patient_last_penta"/>
+                        *:
+                    </label>
+                    <form:radiobuttons path="lastPenta" items="${lastPenta}" cssClass="jsRequire"/>
+                    <span id='lastPentaError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_penta"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                </div>
+
+                <div id="lastPentaDateHolder" class="form-field">
+                    <label for="lastPentaDate" class="formLabel">
+                        <spring:message code="patient_last_penta_date"/>
+                        *:
+                    </label>
+                    <form:input path="lastPentaDate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='lastPentaDateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_penta_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='lastPentaDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_penta_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+            <div id="jsRotavirus" class="hide">
+                <div class="form-field">
+                    <label for="lastRotavirus" class="formLabel">
+                        <spring:message code="patient_last_rotavirus"/>
+                        *:
+                    </label>
+                    <form:radiobuttons path="lastRotavirus" items="${lastRotavirus}" cssClass="jsRequire"/>
+                    <span id='lastRotavirusError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_rotavirus"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                </div>
+
+                <div id="lastRotavirusDateHolder" class="form-field">
+                    <label for="lastRotavirusDate" class="formLabel">
+                        <spring:message code="patient_last_rotavirus_date"/>
+                        *:
+                    </label>
+                    <form:input path="lastRotavirusDate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='lastRotavirusDateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_rotavirus_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='lastRotavirusDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_rotavirus_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+            <div id="jsPneumococcal" class="hide">
+                <div class="form-field">
+                    <label for="lastPneumococcal" class="formLabel">
+                        <spring:message code="patient_last_pneumococcal"/>
+                        *:
+                    </label>
+                    <form:radiobuttons path="lastPneumococcal" items="${lastPneumococcal}" cssClass="jsRequire"/>
+                    <span id='lastPneumococcalError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_pneumococcal"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                </div>
+
+                <div id="lastPneumococcalDateHolder" class="form-field">
+                    <label for="lastPneumococcalDate" class="formLabel">
+                        <spring:message code="patient_last_pneumococcal_date"/>
+                        *:
+                    </label>
+                    <form:input path="lastPneumococcalDate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='lastPneumococcalDateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_pneumococcal_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='lastPneumococcalDateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_pneumococcal_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+            <div id="jsVitA" class="hide">
+                <div class="form-field">
+                    <label for="lastVitaminA" class="formLabel">
+                        <spring:message code="patient_last_measles"/>
+                        *:
+                    </label>
+                    <form:radiobuttons path="lastVitaminA" items="${lastVitaminA}" cssClass="jsRequire"/>
+                    <span id='lastVitaminAError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_last_vita"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                </div>
+
+                <div id="vitADateHolder" class="form-field">
+                    <label for="vitADate" class="formLabel">
+                        <spring:message code="patient_VitA_date"/>
+                        *:
+                    </label>
+                    <form:input path="vitADate" cssClass="jsDate jsBefore jsRequire"/>
+                    <span id='vitADateError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_VitA_date"/> ${fn:escapeXml(required_msg)}
+                    </span>
+                    <span id='vitADateFormatError' class='alertText formlyInvalid formlyAlert hide'>
+                        <spring:message code="patient_VitA_date"/> ${fn:escapeXml(incorrect_msg)}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <input type="button" id="enrollCWC" value="Submit"/>
+    </form:form>
+</div>

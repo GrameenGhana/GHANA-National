@@ -1,0 +1,62 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:form="http://www.springframework.org/tags/form" version="2.0"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:output omit-xml-declaration="yes"/>
+    <jsp:directive.attribute name="time" type="org.motechproject.model.Time" required="true" rtexprvalue="true"/>
+    <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true"/>
+    <jsp:directive.attribute name="label" type="java.lang.String" required="true" rtexprvalue="true"/>
+    <jsp:directive.attribute name="required" type="java.lang.String" rtexprvalue="true"/>
+    <jsp:directive.attribute name="default_select_hour_message" type="java.lang.String" rtexprvalue="true"/>
+    <jsp:directive.attribute name="default_select_minute_message" type="java.lang.String" rtexprvalue="true"/>
+    <jsp:directive.attribute name="hourErrorMsgId" type="java.lang.String" required="true" rtexprvalue="true"/>
+    <jsp:directive.attribute name="hourErrorMessage" type="java.lang.String" rtexprvalue="true"/>
+    <jsp:directive.attribute name="minutesErrorMsgId" type="java.lang.String" required="true" rtexprvalue="true"/>
+    <jsp:directive.attribute name="minutesErrorMessage" type="java.lang.String" rtexprvalue="true"/>
+    <jsp:directive.attribute name="minTimeInclusive" type="org.motechproject.model.Time"/>
+    <jsp:directive.attribute name="maxTimeInclusive" type="org.motechproject.model.Time"/>
+
+    <c:if test="${required}">
+        <c:set var="cssClass" value="jsRequire"/>
+    </c:if>
+    <c:set var="minHour" value="${minTimeInclusive.hour}"/>
+    <c:set var="minMinutes" value="${minTimeInclusive.minute}"/>
+    <c:set var="maxHour" value="${maxTimeInclusive.hour}"/>
+    <c:set var="maxMinutes" value="${maxTimeInclusive.minute}"/>
+    <c:if test="${empty maxHour}"><c:set var="maxHour" value="23"/></c:if>
+
+    <label for="${path}" class="formLabel">${fn:escapeXml(label)}</label>
+    <form:select id="${path}Hour" path="${path}.hour">
+        <option value="">${fn:escapeXml(default_select_hour_message)}</option>
+        <c:forEach var="i" begin="${minHour}" end="${maxHour}" step="1">
+            <c:if test="${time.hour == i}">
+                <option value="${i}" selected="selected">${i}</option>
+            </c:if>
+            <c:if test="${time.hour != i}">
+                <option value="${i}">${i}</option>
+            </c:if>
+        </c:forEach>
+    </form:select>
+
+    <form:select id="${path}Minute" path="${path}.minute">
+        <option value="">${fn:escapeXml(default_select_minute_message)}</option>
+        <c:forEach var="i" begin="0" end="59" step="1">
+            <c:if test="${time.minute == i}">
+                <option value="${i}" selected="selected">${i}</option>
+            </c:if>
+            <c:if test="${time.minute != i}">
+                <option value="${i}">${i}</option>
+            </c:if>
+        </c:forEach>
+    </form:select>
+    <c:if test="${not empty minTimeInclusive and not empty maxTimeInclusive}">
+        (between ${minHour}:<c:if test="${minMinutes le 9}">0</c:if>${minMinutes}
+        and
+        ${maxTimeInclusive.hour}:<c:if test="${maxMinutes le 9}">0</c:if>${maxTimeInclusive.minute} hours)
+    </c:if>
+    
+    <span id="${hourErrorMsgId}" class='alertText formlyInvalid formlyAlert hide'>
+       ${fn:escapeXml(hourErrorMessage)}
+    </span>
+    <span id="${minutesErrorMsgId}" class='alertText formlyInvalid formlyAlert hide'>
+       ${fn:escapeXml(minutesErrorMessage)}
+    </span>
+</jsp:root>

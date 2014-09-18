@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.motechproject.ghana.national.configuration.IPTpVaccinationSchedulesTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.369 sec

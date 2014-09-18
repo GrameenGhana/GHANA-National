@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <context:spring-configured/>
+    <context:component-scan base-package="org.motechproject.ghana.national"/>
+    <util:properties id="ghanaNationalProperties" location="classpath:ghana-national.properties"/>
+
+    <beans:import resource="classpath:applicationContext-core.xml"/>
+
+    <bean id="migrationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${migration.db.connection.string}"/>
+        <property name="username" value="${migration.db.username}"/>
+        <property name="password" value="${migration.db.password}"/>
+    </bean>
+
+    <bean id="seedLoader" class="org.motechproject.ghana.national.tools.seed.SeedLoader">
+        <constructor-arg>
+            <list>
+                <ref bean="staffTypeSeed"/>
+                <ref bean="facilitySeed"/>
+                <ref bean="SMSTextContentSeed"/>
+                <ref bean="mobileMidwifeMessageSeed"/>
+                <ref bean="ivrChannelMappingSeed"/>
+                <ref bean="ivrCallCenterNoMappingSeed"/>
+                <ref bean="inboundDecisionTreeSeed"/>
+                <ref bean="outboundDecisionTreeSeed"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="seedAudioFiles" class="org.motechproject.ghana.national.tools.seed.SeedLoader">
+        <constructor-arg>
+            <list>
+                <ref bean="ivrContentSeed"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="ivrLangMapping" class="org.motechproject.ghana.national.tools.seed.SeedLoader">
+        <constructor-arg>
+            <list>
+                <ref bean="inboundDecisionTreeSeed"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="mmScheduleMigrator" class="org.motechproject.ghana.national.tools.seed.SeedLoader">
+        <constructor-arg>
+            <list>
+                <ref bean="ivrCallCenterNoMappingSeed"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="scheduleMigrator" class="org.motechproject.ghana.national.tools.seed.SeedLoader">
+        <constructor-arg>
+            <list>
+                <ref bean="ttVaccineSeed"/>
+                <ref bean="iptiVaccineSeed"/>
+                <ref bean="iptpVaccineSeed"/>
+                <ref bean="eddSeed"/>
+                <ref bean="bcgVaccineSeed"/>
+                <ref bean="measlesVaccineSeed"/>
+                <ref bean="pentaVaccineSeed"/>
+                <ref bean="yellowFeverVaccineSeed"/>
+                <ref bean="pncMotherVaccineSeed"/>
+                <ref bean="pncBabyVaccineSeed"/>
+                <ref bean="mobileMidwifeMigrationSeed"/>
+                <ref bean="ancVisitSeed"/>
+                <ref bean="outPatientVisitMigrationSeed"/>
+                <ref bean="opvSeed"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+</beans>

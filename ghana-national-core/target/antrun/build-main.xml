@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <echo message="Quartz schema loading: START"/>
+  <path id="dependencies">
+    <fileset file="../build/lib/mysql-connector-java-5.1.13.jar"/>
+  </path>
+  <sql userid="${mysql.user}" driver="${mysql.driver}" classpathref="dependencies" password="${mysql.password}" url="jdbc:mysql://${mysql.server}:${mysql.port}?autoReconnect=true">drop database if exists ${quartz.db};
+                                    create database ${quartz.db};</sql>
+  <sql userid="${mysql.user}" driver="${mysql.driver}" classpathref="dependencies" src="../build/sql/quartz_database_setup.sql" password="${mysql.password}" url="jdbc:mysql://${mysql.server}:${mysql.port}/${quartz.db}?autoReconnect=true"/>
+  <echo message="Quartz schema loading: END"/>
+</target>
+</project>

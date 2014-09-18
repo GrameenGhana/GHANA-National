@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.motechproject.ghana.national.repository.AllFacilitiesTest
+-------------------------------------------------------------------------------
+Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.696 sec

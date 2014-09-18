@@ -1,0 +1,4 @@
+2014-09-03 15:04:37,235 INFO [org.motechproject.ghana.national.tools.RecreateDB] - Recreate DB: START
+2014-09-03 15:05:10,181 INFO [org.motechproject.ghana.national.tools.RecreateDB] - Recreate DB: END
+2014-09-03 15:06:29,230 INFO [org.motechproject.ghana.national.tools.RecreateDB] - Recreate DB: START
+2014-09-03 15:06:57,200 INFO [org.motechproject.ghana.national.tools.RecreateDB] - Recreate DB: END

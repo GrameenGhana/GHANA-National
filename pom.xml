@@ -38,11 +38,11 @@
         <repository>
             <id>motech.nexus</id>
             <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
+            <url>http://localhost:8081/artifactory/libs-snapshot/</url>
         </repository>
         <repository>
             <id>openxdata-repo</id>
-            <url>https://nexus.openxdata.org/content/groups/public/</url>
+            <url>http://nexus.openxdata.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>sourceforge-files</id>
@@ -51,7 +51,7 @@
         <repository>
             <id>motech-repo</id>
             <name>Motech Maven Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/public</url>
+            <url>http://localhost:8081/artifactory/libs-snapshot/</url>
         </repository>
         <repository>
             <id>searls-repo</id>
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.openxdata</groupId>
             <artifactId>protocol-api</artifactId>
-            <version>1.2</version>
+             <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -309,6 +309,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*.properties</exclude>
@@ -331,7 +332,7 @@
                 <repository>
                     <id>motech.nexus</id>
                     <name>Motech Snapshots Repository</name>
-                    <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
+                    <url>http://localhost:8081/artifactory/libs-snapshot/</url>
                     <snapshots>
                         <enabled>true</enabled>
                         <checksumPolicy>warn</checksumPolicy>

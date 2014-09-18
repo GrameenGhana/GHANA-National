@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="patients/new">
+        <put-attribute name="body" value="/WEB-INF/views/patients/new.jspx"/>
+    </definition>
+    <definition extends="default" name="patients/search">
+        <put-attribute name="body" value="/WEB-INF/views/patients/search.jspx"/>
+    </definition>
+    <definition extends="default" name="patients/success">
+        <put-attribute name="body" value="/WEB-INF/views/patients/success.jspx"/>
+    </definition>
+    <definition extends="default" name="patients/edit">
+        <put-attribute name="body" value="/WEB-INF/views/patients/edit.jspx"/>
+    </definition>
+    <definition extends="default" name="cwc/new">
+        <put-attribute name="body" value="/WEB-INF/views/patients/enrollments/cwc.jspx"/>
+    </definition>
+    <definition extends="default" name="anc/new">
+        <put-attribute name="body" value="/WEB-INF/views/patients/enrollments/anc.jspx"/>
+    </definition>
+    <definition extends="default" name="enroll/mobile-midwife/new">
+        <put-attribute name="body" value="/WEB-INF/views/patients/enrollments/mobileMidwife.jspx"/>
+    </definition>
+    <definition extends="default" name="unenroll/mobile-midwife">
+        <put-attribute name="body" value="/WEB-INF/views/patients/enrollments/unregisterMobileMidwife.jspx"/>
+    </definition>
+</tiles-definitions>
+

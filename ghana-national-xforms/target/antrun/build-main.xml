@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <jar destfile="target/ghana-national-xforms-1.0-SNAPSHOT.jar_bk">
+    <zipfileset excludes="org/motechproject/ghana/national/logger/**" src="target/ghana-national-xforms-1.0-SNAPSHOT.jar"/>
+  </jar>
+  <delete file="target/ghana-national-xforms-1.0-SNAPSHOT.jar"/>
+  <move file="target/ghana-national-xforms-1.0-SNAPSHOT.jar_bk" tofile="target/ghana-national-xforms-1.0-SNAPSHOT.jar"/>
+</target>
+</project>

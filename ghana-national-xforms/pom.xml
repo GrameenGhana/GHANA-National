@@ -43,6 +43,12 @@
             <version>${motech-platform.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <artifactId>xforms-server</artifactId>
+            <groupId>org.motechproject.mforms</groupId>
+            <type>jar</type>
+            <version>0.7.0-beta-1</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/integration"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:tx="http://www.springframework.org/schema/tx"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+			http://www.springframework.org/schema/integration
+			http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+    <annotation-config/>
+    <context:component-scan base-package="org.motechproject.ghana.national.messagegateway"/>
+
+    <beans:bean id="reaper" class="org.springframework.integration.store.MessageGroupStoreReaper">
+        <beans:property name="messageGroupStore" ref="messageStore"/>
+        <beans:property name="timeout" value="60000"/>
+    </beans:bean>
+
+    <beans:bean name="reaperJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <beans:property name="jobClass"
+                        value="org.motechproject.ghana.national.messagegateway.domain.MessageGroupStoreRepearJob"/>
+        <beans:property name="jobDataAsMap">
+            <beans:map>
+                <beans:entry key="timeout" value="5"/>
+            </beans:map>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="reaperTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <beans:property name="jobDetail" ref="reaperJob"/>
+        <beans:property name="cronExpression" value="${aggregator.cron.expression}"/>
+    </beans:bean>
+
+    <gateway id="messageAggregatorGateway"
+             service-interface="org.motechproject.ghana.national.messagegateway.service.MessageAggregatorGateway"/>
+
+    <channel id="receivePayload"/>
+    <channel id="dispatchPayload"/>
+
+    <outbound-channel-adapter channel="dispatchPayload" ref="payloadDispatcher" method="dispatch"/>
+
+    <aggregator
+            input-channel="receivePayload"
+            method="aggregate"
+            output-channel="dispatchPayload"
+            message-store="messageStore">
+        <beans:bean class="org.motechproject.ghana.national.messagegateway.domain.MessageDispatcher"/>
+    </aggregator>
+
+    <beans:bean id="aggregatorDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <beans:property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <beans:property name="jdbcUrl" value="${aggregator.db.connection.string}"/>
+        <beans:property name="user" value="${aggregator.db.username}"/>
+        <beans:property name="password" value="${aggregator.db.password}"/>
+        <beans:property name="minPoolSize" value="${aggregator.db.pool.size}"/>
+        <beans:property name="maxPoolSize" value="${aggregator.db.pool.size}"/>
+        <beans:property name="maxIdleTime" value="${aggregator.db.pool.maxIdleTime}"/>
+    </beans:bean>
+
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <beans:bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <beans:property name="dataSource" ref="aggregatorDataSource"/>
+    </beans:bean>
+
+    <beans:import resource="classpath:applicationSmsAPI.xml"/>
+</beans:beans>

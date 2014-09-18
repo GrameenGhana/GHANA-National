@@ -1,0 +1,98 @@
+<div id="body" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:form="http://www.springframework.org/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+     xmlns:spring="http://www.springframework.org/tags" xmlns:motech="urn:jsptagdir:/WEB-INF/tags/motech">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <spring:url value="/resources/js/create-staff.js" var="create_staff_url"/>
+    <script src="${create_staff_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
+    <spring:url value="/admin/staffs/update" var="form_url"/>
+
+    <c:if test="${successMessage ne null}">
+        <br/>
+        <span class="success">
+            <c:out value="${successMessage}"/>
+        </span>
+        <br/>
+        <br/>
+    </c:if>
+
+    <form:form id="staffForm" action="${fn:escapeXml(form_url)}" method="POST" title="Update a Staff Member"
+               commandName="staffForm">
+
+        <form:hidden path="currentRole" value="${staffForm.newRole}"/>
+        <form:hidden path="currentEmail" value="${staffForm.newEmail}"/>
+        <spring:message code="staff_id" var="staff_id" htmlEscape="false"/>
+        <spring:message code="user_first_name" var="user_first_name" htmlEscape="false"/>
+        <spring:message code="user_middle_name" var="user_middle_name" htmlEscape="false"/>
+        <spring:message code="user_last_name" var="user_last_name" htmlEscape="false"/>
+        <spring:message code="user_phone" var="user_phone" htmlEscape="false"/>
+        <spring:message code="user_email" var="user_email" htmlEscape="false"/>
+        <spring:message code="user_role" var="user_role" htmlEscape="false"/>
+        <spring:message code="user_role_select" var="user_role_select" htmlEscape="false"/>
+        <spring:message code="staff_phone_number_incorrect_msg" var="staff_phone_number_incorrect_msg"
+                        htmlEscape="false"/>
+        <spring:message code="required_msg" var="required_msg" htmlEscape="false"/>
+
+
+        <div>
+            <label for="staffId" class="formLabel">${fn:escapeXml(staff_id)}:</label>
+            <form:input path="staffId" size="20" disabled="true"/>
+            <form:hidden path="staffId"/>
+            <form:hidden path="id"/>
+        </div>
+        <div>
+            <label class="formLabel" for="firstName">${fn:escapeXml(user_first_name)} *:</label>
+            <form:input id="firstName" path="firstName" size="20" label="${fn:escapeXml(user_first_name)}"/>
+            <span id='firstNameError' class='alertText formlyInvalid formlyAlert hide'>
+                ${fn:escapeXml(user_first_name)} ${fn:escapeXml(required_msg)}
+            </span>
+        </div>
+        <div>
+            <label class="formLabel" for="middleName">${fn:escapeXml(user_middle_name)}:</label>
+            <form:input id="middleName" path="middleName" size="20" label="${fn:escapeXml(user_middle_name)}"/>
+            <span id='middleNameError' class='alertText formlyInvalid formlyAlert hide'></span>
+
+        </div>
+        <div>
+            <label class="formLabel" for="lastName">${fn:escapeXml(user_last_name)} *:</label>
+            <form:input id="lastName" path="lastName" size="20" label="${fn:escapeXml(user_last_name)}"/>
+            <span id='lastNameError' class='alertText formlyInvalid formlyAlert hide'>
+                ${fn:escapeXml(user_last_name)} ${fn:escapeXml(required_msg)}
+            </span>
+        </div>
+        <div>
+            <motech:phone path="phoneNumber" label="${fn:escapeXml(user_phone)} *:"
+                          errorMsg="${staff_phone_number_incorrect_msg}" required="true"/>
+        </div>
+        <div>
+            <label class="formLabel" for="newEmail">${fn:escapeXml(user_email)}:</label>
+            <form:input cssClass="jsEmail" path="newEmail" size="20" label="${fn:escapeXml(user_email)}"/>
+            <span id='newEmailError' class='alertText formlyInvalid formlyAlert hide'>
+                ${fn:escapeXml(user_email)} ${fn:escapeXml(required_msg)}
+            </span>
+        </div>
+        <div>
+            <label class="formLabel" for="user_role">${fn:escapeXml(user_role)} *:</label>
+            <form:select id="newRole" path="newRole">
+                <option parent="select" value="">${fn:escapeXml(user_role_select)}</option>
+                <c:forEach items="${roles}" var="role">
+                    <c:choose>
+                        <c:when test="${role.key eq staffForm.newRole}">
+                            <option value="${role.key}" selected="selected">${role.key} (${role.value})</option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${role.key}">${role.key} (${role.value})</option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </form:select>
+            <span id='newRoleError' class='alertText formlyInvalid formlyAlert hide'></span>
+        </div>
+        <input type="button" id="submitNewUser" value="Submit"/>
+
+        <div class="formlyAlerts">
+            <form:errors path="newEmail" element="div" cssClass="formlyInvalid formlyAlert"
+                         cssStyle="display: block;"/>
+        </div>
+    </form:form>
+</div>
